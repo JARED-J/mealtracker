@@ -4,8 +4,8 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import MealScreen from '../screens/MealScreen';
+import GoalScreen from '../screens/GoalScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const config = Platform.select({
@@ -13,15 +13,15 @@ const config = Platform.select({
   default: {},
 });
 
-const HomeStack = createStackNavigator(
+const MealStack = createStackNavigator(
   {
-    Home: HomeScreen,
+    Home: MealScreen,
   },
   config
 );
 
-HomeStack.navigationOptions = {
-  tabBarLabel: 'Home',
+MealStack.navigationOptions = {
+  tabBarLabel: 'Meals',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -34,23 +34,23 @@ HomeStack.navigationOptions = {
   ),
 };
 
-HomeStack.path = '';
+MealStack.path = '';
 
-const LinksStack = createStackNavigator(
+const GoalStack = createStackNavigator(
   {
-    Links: LinksScreen,
+    Goal: GoalScreen,
   },
   config
 );
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+GoalStack.navigationOptions = {
+  tabBarLabel: 'Goals',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
   ),
 };
 
-LinksStack.path = '';
+GoalStack.path = '';
 
 const SettingsStack = createStackNavigator(
   {
@@ -69,8 +69,8 @@ SettingsStack.navigationOptions = {
 SettingsStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
-  HomeStack,
-  LinksStack,
+  MealStack,
+  GoalStack,
   SettingsStack,
 });
 
