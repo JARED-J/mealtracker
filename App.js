@@ -5,9 +5,17 @@ import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
+import * as SQLite from 'expo-sqlite';
+
 import AppNavigator from './navigation/AppNavigator';
 
 export default function App(props) {
+  const db = SQLite.openDatabase('misc', '1');
+  db.transaction((txn)=>{
+      txn.executeSql('CREATE TABLE IF NOT EXISTS Misc(open_ts TEXT NOT NULL)', []);
+      txn.executeSql('INSERT INTO Misc (open_ts) VALUES (datetime(\'now\'))', []);
+    });
+
   const [isLoadingComplete, setLoadingComplete] = useState(false);
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
