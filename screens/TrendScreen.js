@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 
 export default function TrendScreen() {
   return (
-    <View style={styles.container}>
+    <View >
       <Text> This is the Trends Screen</Text>
     </View>
   );

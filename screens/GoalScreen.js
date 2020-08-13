@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import {db} from '../db/index';
 
 export default function GoalScreen() {
   return (
