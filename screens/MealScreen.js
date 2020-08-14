@@ -3,11 +3,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-
-import { MonoText } from '../components/StyledText';
 
 export default function MealScreen() {
   return (
@@ -15,15 +12,10 @@ export default function MealScreen() {
       <ScrollView
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
-
         <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>Get started by opening</Text>
-          <View
-            style={styles.codeHighlightContainer}>
-            <MonoText>screens.MealScreen.js</MonoText>
-          </View>
+          <Text style={styles.getStartedText}>All Food Tabel Entries.</Text>
         </View>
-
+        
       </ScrollView>
     </View>
   );
