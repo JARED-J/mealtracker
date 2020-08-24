@@ -4,13 +4,11 @@ import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import initTables from './db/models'
 import AppNavigator from './navigation/AppNavigator';
-
 // Open database && Create tables
 initTables();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
       <AppLoading
