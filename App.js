@@ -8,13 +8,11 @@ import { Ionicons } from '@expo/vector-icons';
 import store from './redux/store/index';
 
 import AppNavigator from './navigation/AppNavigator';
-
 // Open database && Create tables
 initTables();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
       <AppLoading

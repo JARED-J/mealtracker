@@ -1,21 +1,65 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   ScrollView,
   StyleSheet,
   Text,
   View,
+  Button,
+  TextInput
 } from 'react-native';
+import {FoodItem} from '../components/FoodItem';
+import {getFood, addFood} from '../db/queries';
 
 export default function MealScreen() {
+  const [food, setFood] = useState([]);
+  const [name, setName] = useState('');
+  const [cal, setCal] = useState(0);
+  const type = 0;
+  const updateFood = async () => {
+    const foodArr = await getFood();
+    setFood(foodArr);
+  }
+
+  const addUpdate = (name, cal, type) => {
+    addFood(name, cal, type);
+  }
+  console.log(name);
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>All Food Tabel Entries.</Text>
-        </View>
-        
+      <Text>All Food Tabel Entries.</Text>
+      <Button
+        title="Get all from food from database"
+        onPress={() => updateFood()}
+      />
+      <Button
+        title="Add food to database"
+        onPress={() =>  {
+          addUpdate(name, cal, type);
+        }}
+      />
+      <TextInput
+        placeholder="Type the food name here"
+        onChange={evt => {
+          setName(evt.nativeEvent.text)}}
+      />
+      <TextInput
+        placeholder="Type the calorie count here"
+        keyboardType="numeric"
+        onChange={num => {
+          setCal(+num.nativeEvent.text)}}
+      />
+      <ScrollView style={styles.mealContainer}>
+        {food.map(item => (
+          <FoodItem
+            style={styles.mealItem}
+            key={item.id}
+            id={item.id}
+            name={item.name}
+            calories={item.calories}
+            type={item.type}
+            date={item.dateUTC}
+          />
+        ))}
       </ScrollView>
     </View>
   );
@@ -30,30 +74,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
   },
-  contentContainer: {
-    paddingTop: 30,
+  mealContainer: {
+    flex: 1,
   },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
+  mealCategory: {
+    alignItems: 'flex-start',
   },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
+  mealItem: {
+    flex: 1,
   }
 });
