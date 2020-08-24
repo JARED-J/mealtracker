@@ -2,7 +2,7 @@ import {
     FOOD_CREATED,
     FOOD_UPDATED,
     FOOD_DELETED,
-    GET_FOOD
+    GET_FOOD_BY_DAY
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -11,13 +11,13 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
-        case GET_FOOD:
-            return {...state, food:{...action.food}}
+        case GET_FOOD_BY_DAY:
+            return {...state, food:{action.payload}}
         case FOOD_CREATED:
             return {...state, food:{...action.food, food}};
         case FOOD_DELETED:
             const deletedFood = state.food.filter(food => {
-                return food.id !== action.food;
+                return food.id !== action.payload.id;
             });
             return { ...state, food: deletedFood };
         default:

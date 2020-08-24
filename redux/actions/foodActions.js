@@ -3,4 +3,3 @@ import {
     FOOD_UPDATED,
     FOOD_DELETED
 } from './types';
-
