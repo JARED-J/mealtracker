@@ -5,7 +5,7 @@ import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import initTables from './db/models'
 import { Provider } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
-import store from './store/index';
+import store from './redux/store/index';
 
 import AppNavigator from './navigation/AppNavigator';
 

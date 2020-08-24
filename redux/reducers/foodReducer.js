@@ -12,12 +12,12 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     switch (action.type) {
         case GET_FOOD_BY_DAY:
-            return {...state, food:{action.payload}}
+            return {...state, food:{...action.payload}}
         case FOOD_CREATED:
             return {...state, food:{...action.food, food}};
         case FOOD_DELETED:
-            const deletedFood = state.food.filter(food => {
-                return food.id !== action.payload.id;
+            const deletedFood = state.food.filter(item => {
+                return item.id !== action.payload.id;
             });
             return { ...state, food: deletedFood };
         default:
