@@ -1,17 +1,38 @@
 import {db} from './index';
 
-export async function addFood (name, cal, type) {
-    return new Promise((resolve, reject) => {
+// Inserts food into db and returns db obj
+export async function postFood ({name, cal, type}) {
+    const postQuery = `insert into food (dateUTC, name, calories, type) values (datetime('now'),?, ?, ?);`;
+    let postPromise = new Promise((resolve, reject) => {
+        let id;
         db.transaction(txn => {
-          txn.executeSql(
-              `insert into food (dateUTC, name, calories, type)
-              values (datetime('now'),?, ?, ?);`,
-              [name, cal, type]);
-       }, reject, resolve)
+            txn.executeSql(
+                postQuery,
+                [name, cal, type],
+                (_, {insertId}) => {
+                    id = insertId;
+                })
+            }, reject, () => {
+                resolve(id)
+        })
     })
+    let id = await postPromise;
+    let getPromise = new Promise((resolve, reject) => {
+        let food;
+        db.transaction((txn) => {
+            txn.executeSql('select * from food where id = ?;', [id],
+            (_, { rows: { _array }}) => {
+                food = _array[0];
+            });
+        }, reject, () => {
+            resolve(food);
+        });
+    })
+    let newFood = await getPromise;
+    return newFood;
 }
 
-export async function updateFood (id, name, cal) {
+export function updateFood (id, name, cal) {
     return new Promise((resolve, reject) => {
         db.transaction(txn => {
             txn.executeSql(
@@ -21,7 +42,7 @@ export async function updateFood (id, name, cal) {
         });
 }
 
-export async function deleteFood (id) {
+export function deleteFoodDB (id) {
     return new Promise((resolve, reject) => {
         db.transaction(txn => {
             txn.executeSql(`delete from food where id = ?;`, [id]);
@@ -29,20 +50,7 @@ export async function deleteFood (id) {
     });
 }
 
-export async function numFoodItems () {
-    return new Promise((resolve, reject) => {
-        let count = 0;
-        db.transaction((txn)=>{
-            txn.executeSql('SELECT COUNT(*) AS c FROM food', [], function (tx, res) {
-                count = res.rows.item(0)['c'];
-            });
-        }, reject, ()=>{
-            resolve(count);
-        });
-    });
-}
-
-export async function getFood () {
+export function getFood (date) {
     return new Promise((resolve, reject) => {
         let foodArr;
         db.transaction((txn) => {

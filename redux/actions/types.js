@@ -1,6 +1,6 @@
 // FOOD
-export const FOOD_CREATED = 'food_created';
-export const FOOD_UPDATED = 'food_updated';
-export const FOOD_DELETED = 'food_deleted';
-export const GET_FOOD_BY_DAY = 'get_food_by_day';
+export const FOOD_UPDATED = 'FOOD_UPDATED';
+export const FOOD_DELETED = 'FOOD_DELETED';
+export const ADD_FOOD = 'ADD_FOOD';
+export const FOOD_BY_DAY = 'FOOD_BY_DAY';
 // TRENDS

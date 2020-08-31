@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {connect} from 'react-redux';
 import {
   ScrollView,
   StyleSheet,
@@ -8,45 +9,43 @@ import {
   TextInput
 } from 'react-native';
 import {FoodItem} from '../components/FoodItem';
-import {getFood, addFood} from '../db/queries';
+import {
+  getFoodByDate,
+  addFoodThunk,
+  deleteThunk
+} from '../redux/actions/foodActions'
 
-export default function MealScreen() {
-  const [food, setFood] = useState([]);
-  const [name, setName] = useState('');
+const MealScreen = props => {
+  const {food} = props;
+  const [name, setText] = useState('');
   const [cal, setCal] = useState(0);
   const type = 0;
-  const updateFood = async () => {
-    const foodArr = await getFood();
-    setFood(foodArr);
-  }
-
-  const addUpdate = (name, cal, type) => {
-    addFood(name, cal, type);
-  }
-  console.log(name);
   return (
     <View style={styles.container}>
-      <Text>All Food Tabel Entries.</Text>
       <Button
         title="Get all from food from database"
-        onPress={() => updateFood()}
+        onPress={() => {
+          props.handleGetFood();
+          setCal(0);
+          setText('');
+        }}
       />
       <Button
         title="Add food to database"
         onPress={() =>  {
-          addUpdate(name, cal, type);
+          props.handlePostFood({name, cal, type})
+          setCal(0)
+          setText('')
         }}
       />
       <TextInput
         placeholder="Type the food name here"
-        onChange={evt => {
-          setName(evt.nativeEvent.text)}}
+        onChange={evt => setText(evt.nativeEvent.text)}
       />
       <TextInput
         placeholder="Type the calorie count here"
         keyboardType="numeric"
-        onChange={num => {
-          setCal(+num.nativeEvent.text)}}
+        onChange={num => setCal(num.nativeEvent.text * 1)}
       />
       <ScrollView style={styles.mealContainer}>
         {food.map(item => (
@@ -55,19 +54,35 @@ export default function MealScreen() {
             key={item.id}
             id={item.id}
             name={item.name}
-            calories={item.calories}
+            calories={item.calories || item.cal}
             type={item.type}
-            date={item.dateUTC}
-          />
-        ))}
+            dateUTC={item.dateUTC}
+            deleteFood={props.handleDeleteFood}
+          />))
+        }
       </ScrollView>
     </View>
   );
 }
 
+
 MealScreen.navigationOptions = {
   title: 'Meals',
 };
+
+const mapState = state => ({
+    food: state.food
+})
+
+const mapDispatch = dispatch => {
+  return {
+    handleGetFood: () => dispatch(getFoodByDate(2)),
+    handlePostFood: (food) => dispatch(addFoodThunk(food)),
+    handleDeleteFood: (id) => dispatch(deleteThunk(id))
+  }
+}
+
+export default connect(mapState, mapDispatch)(MealScreen)
 
 const styles = StyleSheet.create({
   container: {
