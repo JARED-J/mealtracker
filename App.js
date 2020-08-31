@@ -3,14 +3,16 @@ import { Asset } from 'expo-asset';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import initTables from './db/models'
-import AppNavigator from './navigation/AppNavigator';
+import { Provider } from 'react-redux';
+import { Ionicons } from '@expo/vector-icons';
+import store from './redux/store/index';
 
+import AppNavigator from './navigation/AppNavigator';
 // Open database && Create tables
 initTables();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
-
   if (!isLoadingComplete && !props.skipLoadingScreen) {
     return (
       <AppLoading
@@ -21,10 +23,12 @@ export default function App(props) {
     );
   } else {
     return (
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <AppNavigator />
-      </View>
+      <Provider store={store}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <AppNavigator />
+        </View>
+      </Provider>
     );
   }
 }
