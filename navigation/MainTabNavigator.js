@@ -7,6 +7,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import MealScreen from '../screens/MealScreen';
 import GoalScreen from '../screens/GoalScreen';
 import TrendScreen from '../screens/TrendScreen';
+import FoodForm from '../screens/FoodForm';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -16,6 +17,7 @@ const config = Platform.select({
 const MealStack = createStackNavigator(
   {
     Home: MealScreen,
+    Form: FoodForm
   },
   config
 );

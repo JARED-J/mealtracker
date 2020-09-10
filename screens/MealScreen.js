@@ -1,65 +1,47 @@
-import React, {useState} from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput
-} from 'react-native';
-import {FoodItem} from '../components/FoodItem';
-import {
-  getFoodByDate,
-  addFoodThunk,
-  deleteThunk
-} from '../redux/actions/foodActions'
+import {ScrollView, StyleSheet, View} from 'react-native';
+import {FoodItem, CategoryHeader, CalorieCount} from '../components';
+import {getFoodByDate, deleteThunk} from '../redux/actions/foodActions'
+
+const listByType = (type, food, props) => {
+  let filtered = food.filter(item => {
+    return item.type === type;
+  });
+  return filtered.map(item => (
+    <FoodItem
+      style={styles.mealItem}
+      key={item.id}
+      id={item.id}
+      name={item.name}
+      calories={item.calories}
+      type={item.type}
+      dateUTC={item.dateUTC}
+      deleteFood={props.handleDeleteFood}
+      navigation={props.navigation}
+    />
+    )
+  )
+}
 
 const MealScreen = props => {
-  const {food} = props;
-  const [name, setText] = useState('');
-  const [cal, setCal] = useState(0);
-  const type = 0;
+  // Pass date parameter from getCurrentDate
+  useEffect(() => {
+    props.handleGetFood()
+  }, [])
+  const {food, navigation} = props;
   return (
     <View style={styles.container}>
-      <Button
-        title="Get all from food from database"
-        onPress={() => {
-          props.handleGetFood();
-          setCal(0);
-          setText('');
-        }}
-      />
-      <Button
-        title="Add food to database"
-        onPress={() =>  {
-          props.handlePostFood({name, cal, type})
-          setCal(0)
-          setText('')
-        }}
-      />
-      <TextInput
-        placeholder="Type the food name here"
-        onChange={evt => setText(evt.nativeEvent.text)}
-      />
-      <TextInput
-        placeholder="Type the calorie count here"
-        keyboardType="numeric"
-        onChange={num => setCal(num.nativeEvent.text * 1)}
-      />
       <ScrollView style={styles.mealContainer}>
-        {food.map(item => (
-          <FoodItem
-            style={styles.mealItem}
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            calories={item.calories || item.cal}
-            type={item.type}
-            dateUTC={item.dateUTC}
-            deleteFood={props.handleDeleteFood}
-          />))
-        }
+        <CategoryHeader title="Breakfast" type={0} navigation={navigation} />
+          {listByType(0, food, props)}
+        <CategoryHeader title="Lunch" type={1} navigation={navigation} />
+          {listByType(1, food, props)}
+        <CategoryHeader title="Dinner" type={2} navigation={navigation} />
+          {listByType(2, food, props)}
+        <CategoryHeader title="Snacks" type={3} navigation={navigation} />
+          {listByType(3, food, props)}
+        <CalorieCount props={props} />
       </ScrollView>
     </View>
   );
@@ -76,8 +58,7 @@ const mapState = state => ({
 
 const mapDispatch = dispatch => {
   return {
-    handleGetFood: () => dispatch(getFoodByDate(2)),
-    handlePostFood: (food) => dispatch(addFoodThunk(food)),
+    handleGetFood: date => dispatch(getFoodByDate(date)),
     handleDeleteFood: (id) => dispatch(deleteThunk(id))
   }
 }

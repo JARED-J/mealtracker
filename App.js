@@ -3,9 +3,9 @@ import { Asset } from 'expo-asset';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import initTables from './db/models'
-import { Provider } from 'react-redux';
-import { Ionicons } from '@expo/vector-icons';
+import {Provider as StoreProvider} from 'react-redux';
 import store from './redux/store/index';
+import {Provider as PaperProvider} from 'react-native-paper';
 
 import AppNavigator from './navigation/AppNavigator';
 // Open database && Create tables
@@ -23,12 +23,14 @@ export default function App(props) {
     );
   } else {
     return (
-      <Provider store={store}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+      <StoreProvider store={store}>
+        <PaperProvider>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
         </View>
-      </Provider>
+        </PaperProvider>
+      </StoreProvider>
     );
   }
 }
