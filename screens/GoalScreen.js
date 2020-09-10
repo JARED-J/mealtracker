@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { Text, View, StyleSheet, FlatList, Button} from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet} from 'react-native';
 
 export default function GoalScreen() {
   return (

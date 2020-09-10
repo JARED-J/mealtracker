@@ -22,6 +22,7 @@ export default async function initTables() {
                     id integer primary key not null,
                     name text not null,
                     calories integer not null,
+                    type int not null,
                     dateUTC text not null)`, [], ()=>{
                         console.log('Food table created');
                     });

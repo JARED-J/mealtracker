@@ -1,30 +1,34 @@
 import React from 'react';
-import {
-    View,
-    Text,
-    Button,
-    StyleSheet
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { List, FAB } from 'react-native-paper';
 
-const foodType = {
-    0: 'Breakfast',
-    1: 'Lunch',
-    2: 'Dinner',
-    3: 'Snacks'
-}
-
-export const FoodItem = ({id, name, calories, type, deleteFood}) => {
+const EditDelete = ({props}) => {
+    const {navigation, id, type, deleteFood} = props;
     return (
         <View>
-            <Text>id:{id}</Text>
-            <Text>name:{name}</Text>
-            <Text>cal:{calories}</Text>
-            <Text>type:{foodType[type]}</Text>
-            <Button
-                title="Delete Food"
-                onPress={() => deleteFood(id)}
-            />
+            <FAB style={styles.fab} small icon="pencil" onPress={() => navigation.navigate('Form', {formType: 'edit', mealType: type})}/>
+            <FAB style={styles.fab} small icon='close' onPress={() => deleteFood(id)} />
         </View>
+    )
+}
+
+export const FoodItem = (props) => {
+    return (
+        <List.Item
+            style={styles.flex}
+            title={`${props.name}  ${props.calories}`}
+            right={() => <EditDelete props={props} />}
+        />
     )
 };
 
+const styles = StyleSheet.create({
+    flex: {
+        display: 'flex'
+    },
+    fab: {
+        margin: 20,
+        right: 0,
+        bottom: 0
+    }
+})
