@@ -3,10 +3,14 @@ import { View, StyleSheet } from 'react-native';
 import { List, FAB } from 'react-native-paper';
 
 const EditDelete = ({props}) => {
-    const {navigation, id, type, deleteFood} = props;
+    const {navigation, id, type, deleteFood, calories, name} = props;
     return (
         <View>
-            <FAB style={styles.fab} small icon="pencil" onPress={() => navigation.navigate('Form', {formType: 'edit', mealType: type})}/>
+            <FAB 
+                style={styles.fab}
+                small
+                icon="pencil"
+                onPress={() => navigation.navigate('Form', {formType: 'edit', mealType: type, id, calories, title:name})}/>
             <FAB style={styles.fab} small icon='close' onPress={() => deleteFood(id)} />
         </View>
     )

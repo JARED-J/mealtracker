@@ -1,5 +1,19 @@
 import {db} from './index';
 
+const getSingleFood  = id => {
+    return new Promise((resolve, reject) => {
+        let food;
+        db.transaction(txn => {
+            txn.executeSql(`select * from food where id = ?;`, [id],
+            (_, {rows: {_array}}) => {
+                food = _array[0];
+            });
+        }, reject, () => {
+            resolve(food)
+        })
+    });
+}
+
 // Inserts food into db and returns db obj
 export async function postFood ({name, cal, type}) {
     const postQuery = `insert into food (dateUTC, name, calories, type) values (datetime('now'),?, ?, ?);`;
@@ -17,29 +31,21 @@ export async function postFood ({name, cal, type}) {
         })
     })
     let id = await postPromise;
-    let getPromise = new Promise((resolve, reject) => {
-        let food;
-        db.transaction((txn) => {
-            txn.executeSql('select * from food where id = ?;', [id],
-            (_, { rows: { _array }}) => {
-                food = _array[0];
-            });
-        }, reject, () => {
-            resolve(food);
-        });
-    })
-    let newFood = await getPromise;
+    let newFood = await getSingleFood(id);
     return newFood;
 }
 
-export function updateFood (id, name, cal) {
-    return new Promise((resolve, reject) => {
+export async function updateFood (food) {
+    const {id, name, cal, type} = food;
+    const updatePromise = await new Promise((resolve, reject) => {
         db.transaction(txn => {
             txn.executeSql(
-                `update food set name = ?, calories = ?, where id = ?;`,
-                [name, cal, id]);
-            }, reject, resolve)
+                `update food set name = ?, calories = ?, type = ? where id = ?;`,
+                [name, cal, type, id])
+            }, reject, () => resolve(true))
         });
+    let updated = await getSingleFood(id);
+    return updated;
 }
 
 export function deleteFoodDB (id) {

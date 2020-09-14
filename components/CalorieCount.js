@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {List} from 'react-native-paper';
 
 export const CalorieCount = ({props}) => {
     const {food} = props;
@@ -8,8 +8,8 @@ export const CalorieCount = ({props}) => {
         total += i.calories;
     })
     return (
-        <View>
-            <Text>Calorie Count: {total}</Text>
-        </View>
+        <List.Item
+            title={`Today's Calories: ${total}`}
+        />
     )
 }

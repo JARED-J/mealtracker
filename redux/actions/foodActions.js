@@ -7,7 +7,8 @@ import {
 import {
     getFood,
     postFood,
-    deleteFoodDB
+    deleteFoodDB,
+    updateFood
 } from '../../db/queries';
 
 // Action Creators
@@ -43,5 +44,11 @@ export const addFoodThunk = food => dispatch => {
 export const deleteThunk = id => dispatch => {
     deleteFoodDB(id)
         .then(() => dispatch(deleteFoodA(id)))
+        .catch(err => console.log(err))
+}
+
+export const updateFoodThunk = food => dispatch => {
+    updateFood(food)
+        .then(updated => dispatch(updateFoodA(updated)))
         .catch(err => console.log(err))
 }
