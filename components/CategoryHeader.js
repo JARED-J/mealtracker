@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     fab: {
-        margin: 20,
+        margin: 5,
         right: 0,
         bottom: 0
     }

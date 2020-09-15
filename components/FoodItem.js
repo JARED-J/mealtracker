@@ -5,7 +5,7 @@ import { List, FAB } from 'react-native-paper';
 const EditDelete = ({props}) => {
     const {navigation, id, type, deleteFood, calories, name} = props;
     return (
-        <View>
+        <View style={styles.flex}>
             <FAB 
                 style={styles.fab}
                 small
@@ -19,7 +19,6 @@ const EditDelete = ({props}) => {
 export const FoodItem = (props) => {
     return (
         <List.Item
-            style={styles.flex}
             title={`${props.name}  ${props.calories}`}
             right={() => <EditDelete props={props} />}
         />
@@ -28,10 +27,11 @@ export const FoodItem = (props) => {
 
 const styles = StyleSheet.create({
     flex: {
-        display: 'flex'
+        flexDirection: 'row'
+
     },
     fab: {
-        margin: 20,
+        margin: 5,
         right: 0,
         bottom: 0
     }
