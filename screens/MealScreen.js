@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View, Button, Text} from 'react-native';
 import {FoodItem, CategoryHeader, CalorieCount} from '../components';
-import {getFoodByDate, deleteThunk} from '../redux/actions/foodActions'
+import {getFoodByDate, deleteThunk} from '../redux/actions/foodActions';
 
 const listByType = (type, food, props) => {
   let filtered = food.filter(item => {

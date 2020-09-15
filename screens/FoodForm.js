@@ -1,20 +1,19 @@
+/* eslint-disable react/jsx-pascal-case */
 import React, { useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import { TextInput, FAB } from 'react-native-paper';
-import {addFoodThunk} from '../redux/actions/foodActions'
+import {addFoodThunk, updateFoodThunk} from '../redux/actions/foodActions'
 
 // Add update thunk functionality
 const FoodForm = props => {
-    const {navigation} = props
-    const {title, calories, mealType, formType} = navigation.state.params;
+    const {navigation, handlePostFood, handleUpdateFood} = props
+    const {title, calories, mealType, formType, id} = navigation.state.params;
     const [name, setName] = useState('' || title);
     const [cal, setCal] = useState(0 || calories);
     const [type, setType] = useState(mealType);
-
     const onFormSubmit = () => {
-        props.handlePostFood({name, cal, type});
-        //formType === 'post' ? handlePostFood({name, cal, type}) : updateFood({name, cal, type});
+        formType === 'post' ? handlePostFood({name, cal, type}) : handleUpdateFood({id, name, cal, type});
         navigation.goBack()
     }
 
@@ -30,7 +29,7 @@ const FoodForm = props => {
                 />
                 <TextInput
                     label="Calorie count"
-                    value={cal}
+                    value={cal + ''}
                     onChangeText={setCal}
                     mode="flat"
                     style={styles.text}
@@ -41,7 +40,7 @@ const FoodForm = props => {
                     style={styles.fab}
                     small
                     icon="check"
-                    disabled={name == "" ? true : false}
+                    disabled={name === '' ? true : false}
                     onPress={() => onFormSubmit()}
                 />
             {/*
@@ -85,8 +84,8 @@ const styles = StyleSheet.create({
 
 const mapDispatch = dispatch => {
     return {
-        handlePostFood: food => dispatch(addFoodThunk(food))
-        //handleUpdateFood: food => dispatch(updateFoodThunk(food))
+        handlePostFood: food => dispatch(addFoodThunk(food)),
+        handleUpdateFood: food => dispatch(updateFoodThunk(food))
     }
 }
 

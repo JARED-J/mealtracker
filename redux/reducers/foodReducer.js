@@ -14,7 +14,7 @@ export default (state = INITIAL_STATE, action) => {
         case ADD_FOOD:
             return [...state, action.payload];
         case FOOD_UPDATED:
-            return state.filter(item => {
+            return state.map(item => {
                 if (item.id === action.payload.id) {
                     return action.payload;
                 } else {
