@@ -1,21 +1,27 @@
-/* eslint-disable react/jsx-pascal-case */
 import React, { useState, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { TextInput, FAB } from 'react-native-paper';
+import DropDown from 'react-native-paper-dropdown';
 import {addFoodThunk, updateFoodThunk} from '../redux/actions/foodActions'
 
-// Add update thunk functionality
 const FoodForm = props => {
     const {navigation, handlePostFood, handleUpdateFood} = props
     const {title, calories, mealType, formType, id} = navigation.state.params;
     const [name, setName] = useState('' || title);
-    const [cal, setCal] = useState(0 || calories);
+    const [cal, setCal] = useState(calories || 0);
     const [type, setType] = useState(mealType);
+    const [showDropDown, setShowDropDown] = useState(false);
     const onFormSubmit = () => {
         formType === 'post' ? handlePostFood({name, cal, type}) : handleUpdateFood({id, name, cal, type});
         navigation.goBack()
     }
+    const mealList = [
+      {label: 'Breakfast', value: 0},
+      {label: 'Lunch', value: 1},
+      {label: 'Dinner', value: 2},
+      {label: 'Snacks', value: 3}
+    ];
 
     return (
         <Fragment>
@@ -43,10 +49,17 @@ const FoodForm = props => {
                     disabled={name === '' ? true : false}
                     onPress={() => onFormSubmit()}
                 />
-            {/*
-                Add dropdown box to update type of food
-                onChange={evt => setType(evt.target.option?)}
-            */}
+                <SafeAreaView>
+                  <DropDown 
+                    label="Change Meal"
+                    value={type}
+                    setValue={setType}
+                    list={mealList}
+                    visible={showDropDown}
+                    showDropDown={() => setShowDropDown(true)}
+                    onDismiss={() => setShowDropDown(false)}
+                  />
+                </SafeAreaView>
             </View>
         </Fragment>
     )
