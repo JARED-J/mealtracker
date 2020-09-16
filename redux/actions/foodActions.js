@@ -9,7 +9,7 @@ import {
     postFood,
     deleteFoodDB,
     updateFood
-} from '../../db/queries';
+} from '../../db/foodQueries';
 
 // Action Creators
 const foodByDateA = food => ({

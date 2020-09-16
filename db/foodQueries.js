@@ -56,16 +56,17 @@ export function deleteFoodDB (id) {
     });
 }
 
-export function getFood (date) {
+export function getFood () {
     return new Promise((resolve, reject) => {
+        let query = 'select * from food where dateUTC between date("now", "start of day") and date("now", "start of day", "+1 day");';
         let foodArr;
         db.transaction((txn) => {
-            txn.executeSql('select * from food;', [],
-            (_, { rows: { _array }}) => {
-                foodArr = _array;
-            });
+            txn.executeSql(query, [],
+                (_, { rows: { _array }}) => {
+                    foodArr = _array;
+                });
         }, reject, () => {
             resolve(foodArr);
-        });
-    });
+        });}
+    );
 }
