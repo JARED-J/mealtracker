@@ -1,8 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {FoodItem, CategoryHeader, CalorieCount} from '../components';
 import {getFoodByDate, deleteThunk} from '../redux/actions/foodActions';
+import {getSettingsThunk} from '../redux/actions/settingActions';
+
 const listByType = (type, food, props) => {
   let filtered = food.filter(item => {
     return item.type === type;
@@ -23,22 +25,34 @@ const listByType = (type, food, props) => {
   )
 }
 
+const breakfastView = props => {
+  const {food, settings, navigation} = props
+  if (settings.breakfast_view) {
+    return (
+      <Fragment>
+        <CategoryHeader title="Breakfast" type={0} navigation={navigation} />
+        {listByType(0, food, props)}
+      </Fragment>
+    )
+  }
+}
+
 const MealScreen = props => {
   useEffect(() => {
-    props.handleGetFood()
+    props.handleGetFood();
+    props.handleSettings();
   }, [])
-  const {food, navigation} = props;
+  const {food, navigation, settings} = props;
   return (
     <View style={styles.container}>
       <ScrollView style={styles.mealContainer}>
-        <CategoryHeader title="Breakfast" type={0} navigation={navigation} />
-          {listByType(0, food, props)}
+        {breakfastView(props)}
         <CategoryHeader title="Lunch" type={1} navigation={navigation} />
-          {listByType(1, food, props)}
+        {listByType(1, food, props)}
         <CategoryHeader title="Dinner" type={2} navigation={navigation} />
-          {listByType(2, food, props)}
+        {listByType(2, food, props)}
         <CategoryHeader title="Snacks" type={3} navigation={navigation} />
-          {listByType(3, food, props)}
+        {listByType(3, food, props)}
         <CalorieCount props={props} />
       </ScrollView>
     </View>
@@ -51,13 +65,16 @@ MealScreen.navigationOptions = {
 };
 
 const mapState = state => ({
-    food: state.food
+    food: state.food,
+    settings: state.settings,
+    state
 })
 
 const mapDispatch = dispatch => {
   return {
     handleGetFood: date => dispatch(getFoodByDate(date)),
-    handleDeleteFood: (id) => dispatch(deleteThunk(id))
+    handleDeleteFood: (id) => dispatch(deleteThunk(id)),
+    handleSettings: () => dispatch(getSettingsThunk())
   }
 }
 

@@ -3,6 +3,9 @@ import {db} from './index';
 export default async function initTables() {
     return new Promise((resolve, reject) => {
         db.transaction(txn => {
+            // txn.executeSql('drop table settings;', [], () => {
+            //     console.log('Settings table dropped')
+            // })
             // Enable Foriegn Keys
             txn.executeSql('PRAGMA foreign_keys = ON;', [], ()=>{
                 console.log('Foreign keys turned on');
@@ -12,7 +15,7 @@ export default async function initTables() {
                 `create table if not exists Settings (
                     id integer primary key not null,
                     name text not null,
-                    local_time_zone text not null,
+                    daily_goal int not null,
                     breakfast_view integer not null)`, [], ()=>{
                         console.log('Settings table created');
                     });
