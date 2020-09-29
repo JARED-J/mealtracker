@@ -2,8 +2,6 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {List, FAB} from 'react-native-paper';
 
-// Make const that has edit and delete funtionality //
-
 export const CategoryHeader = props => {
     const { title, navigation, type } = props;
     return (

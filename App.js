@@ -2,14 +2,15 @@ import { AppLoading } from 'expo';
 import { Asset } from 'expo-asset';
 import React, { useState } from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import initTables from './db/models'
+import initTables from './db/models';
+import {initSettings} from './db/settingQueries';
 import {Provider as StoreProvider} from 'react-redux';
 import store from './redux/store/index';
 import {Provider as PaperProvider} from 'react-native-paper';
-
 import AppNavigator from './navigation/AppNavigator';
-// Open database && Create tables
+// Open database & Create tables, post basic settings
 initTables();
+initSettings();
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);

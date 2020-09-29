@@ -5,9 +5,10 @@ import { createBottomTabNavigator } from 'react-navigation-tabs';
 
 import TabBarIcon from '../components/TabBarIcon';
 import MealScreen from '../screens/MealScreen';
-import GoalScreen from '../screens/GoalScreen';
+import GoalScreen from '../screens/SettingScreen';
 import TrendScreen from '../screens/TrendScreen';
 import FoodForm from '../screens/FoodForm';
+import SettingForm from '../screens/SettingForm';
 
 const config = Platform.select({
   web: { headerMode: 'screen' },
@@ -38,25 +39,27 @@ MealStack.navigationOptions = {
 
 MealStack.path = '';
 
-const GoalStack = createStackNavigator(
+const SettingStack = createStackNavigator(
   {
     Goal: GoalScreen,
+    Form: SettingForm
   },
   config
 );
 
-GoalStack.navigationOptions = {
-  tabBarLabel: 'Goals',
+SettingStack.navigationOptions = {
+  tabBarLabel: 'Settings',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
   ),
 };
 
-GoalStack.path = '';
+SettingStack.path = '';
 
 const TrendStack = createStackNavigator(
   {
     Settings: TrendScreen,
+    Form: SettingForm
   },
   config
 );
@@ -72,8 +75,8 @@ TrendStack.path = '';
 
 const tabNavigator = createBottomTabNavigator({
   MealStack,
-  GoalStack,
   TrendStack,
+  SettingStack
 });
 
 tabNavigator.path = '';
