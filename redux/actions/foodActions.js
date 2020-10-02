@@ -30,9 +30,9 @@ const deleteFoodA = id => ({
 
 //Thunk DB Calls with actions
 export const getFoodByDate = date => dispatch => {
-        getFood(date)
-            .then(food => dispatch(foodByDateA(food)))
-            .catch(err => console.log(err));
+    getFood(date)
+        .then(food => dispatch(foodByDateA(food)))
+        .catch(err => console.log(err));
 }
 
 export const addFoodThunk = food => dispatch => {
