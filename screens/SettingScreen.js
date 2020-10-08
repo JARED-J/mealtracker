@@ -28,10 +28,6 @@ const SettingScreen = props => {
   );
 }
 
-SettingScreen.navigationOptions = {
-  title: 'Settings',
-};
-
 const mapState = state => ({
   settings: state.settings
 })

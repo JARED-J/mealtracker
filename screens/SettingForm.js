@@ -6,60 +6,61 @@ import DropDown from 'react-native-paper-dropdown';
 import {updateSettingsThunk} from '../redux/actions/settingActions';
 
 const FoodForm = props => {
-    const {navigation, handleUpdateThunk, breakfast_view, daily_goal, name} = props
-    const [cal, setCal] = useState('');
-    const [title, setTitle] = useState(name)
-    const [breakfast, setBreakfast] = useState(breakfast_view || 1);
-    const [showDropDown, setShowDropDown] = useState(false);
-    const onFormSubmit = () => {
-        handleUpdateThunk({title, breakfast, cal})
-        navigation.goBack()
-    }
+  const {navigation, handleUpdateThunk} = props
+  const {breakfast_view, daily_goal, name} = navigation.state.params;
+  const [cal, setCal] = useState(daily_goal);
+  const [title, setTitle] = useState(name)
+  const [breakfast, setBreakfast] = useState(breakfast_view || 1);
+  const [showDropDown, setShowDropDown] = useState(false);
+  const onFormSubmit = () => {
+    handleUpdateThunk({title, breakfast, cal})
+    navigation.goBack()
+  }
 
-    const options = [
-        {label: 'Show Breakfast', value: 1},
-        {label: 'Hide Breakfast', value: 0}
-    ];
+  const options = [
+    {label: 'Show Breakfast', value: 1},
+    {label: 'Hide Breakfast', value: 0}
+  ];
 
-    return (
-        <Fragment>
-            <View style={styles.container}>
-                <TextInput
-                    label="Change Name"
-                    value={title}
-                    mode="outlined"
-                    onChangeText={setTitle}
-                    style={styles.title}
-                />
-                <TextInput
-                    label="Daily Calorie Goal"
-                    value={cal + ''}
-                    onChangeText={setCal}
-                    mode="flat"
-                    style={styles.text}
-                    returnKeyType="done"
-                    blurOnSubmit={true}
-                />
-                <FAB
-                    style={styles.fab}
-                    small
-                    icon="check"
-                    onPress={() => onFormSubmit()}
-                />
-                <SafeAreaView>
-                  <DropDown 
-                    label="Show Breakfast"
-                    value={breakfast}
-                    setValue={setBreakfast}
-                    list={options}
-                    visible={showDropDown}
-                    showDropDown={() => setShowDropDown(true)}
-                    onDismiss={() => setShowDropDown(false)}
-                  />
-                </SafeAreaView>
-            </View>
-        </Fragment>
-    )
+  return (
+    <Fragment>
+      <View style={styles.container}>
+        <TextInput
+          label="Change Name"
+          value={title}
+          mode="outlined"
+          onChangeText={setTitle}
+          style={styles.title}
+        />
+        <TextInput
+          label="Daily Calorie Goal"
+          value={cal + ''}
+          onChangeText={setCal}
+          mode="flat"
+          style={styles.text}
+          returnKeyType="done"
+          blurOnSubmit={true}
+        />
+        <FAB
+          style={styles.fab}
+          small
+          icon="check"
+          onPress={() => onFormSubmit()}
+        />
+        <SafeAreaView>
+          <DropDown
+            label="Show Breakfast"
+            value={breakfast}
+            setValue={setBreakfast}
+            list={options}
+            visible={showDropDown}
+            showDropDown={() => setShowDropDown(true)}
+            onDismiss={() => setShowDropDown(false)}
+          />
+        </SafeAreaView>
+      </View>
+    </Fragment>
+  )
 }
 
 const styles = StyleSheet.create({
