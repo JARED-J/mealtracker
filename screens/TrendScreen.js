@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Text, StyleSheet } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import {connect} from 'react-redux';
 
@@ -15,24 +15,30 @@ const TrendScreen = props => {
     return trend.calories
   })
 
+  const renderChart = (
+    <LineChart
+      data={{
+        labels,
+        datasets: [{data}]
+      }}
+      width={windowWidth}
+      height={windowHeight * 0.8}
+      chartConfig={chartConfig}
+    />
+  )
+
+  const noData = (
+    <View style={styles.center}>
+      <Text style={styles.text}>No Data For Trend Chart</Text>
+    </View>
+  )
+
   return (
     <View>
-      <LineChart
-        data={{
-          labels,
-          datasets: [{data}]
-        }}
-        width={windowWidth}
-        height={windowHeight * 0.8}
-        chartConfig={chartConfig}
-      />
+      {trends[0] ? renderChart : noData}
     </View>
   );
 }
-
-TrendScreen.navigationOptions = {
-  title: 'Trends',
-};
 
 const mapState = state => ({
   trends: state.trends
@@ -47,4 +53,13 @@ const chartConfig = {
   barPercentage: 0.5,
 };
 
+const styles = StyleSheet.create({
+  text: {
+    textAlign: 'center'
+  },
+  center: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
 export default connect(mapState, null)(TrendScreen);

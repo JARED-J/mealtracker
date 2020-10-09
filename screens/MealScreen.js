@@ -61,11 +61,6 @@ const MealScreen = props => {
   );
 }
 
-
-MealScreen.navigationOptions = {
-  title: 'Meals',
-};
-
 const mapState = state => ({
     food: state.food,
     settings: state.settings,
