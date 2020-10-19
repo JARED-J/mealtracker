@@ -4,7 +4,6 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import {FoodItem, CategoryHeader, CalorieCount} from '../components';
 import {getFoodByDate, deleteThunk} from '../redux/actions/foodActions';
 import {getSettingsThunk} from '../redux/actions/settingActions';
-import {getTrendsThunk} from '../redux/actions/trendActions';
 
 const listByType = (type, food, props) => {
   let filtered = food.filter(item => {
@@ -42,7 +41,6 @@ const MealScreen = props => {
   useEffect(() => {
     props.handleGetFood();
     props.handleSettings();
-    props.handleTrends();
   }, [])
   const {food, navigation, settings} = props;
   return (
@@ -71,8 +69,7 @@ const mapDispatch = dispatch => {
   return {
     handleGetFood: date => dispatch(getFoodByDate(date)),
     handleDeleteFood: (id) => dispatch(deleteThunk(id)),
-    handleSettings: () => dispatch(getSettingsThunk()),
-    handleTrends: () => dispatch(getTrendsThunk())
+    handleSettings: () => dispatch(getSettingsThunk())
   }
 }
 
