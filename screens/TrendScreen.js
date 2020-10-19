@@ -1,12 +1,16 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, Dimensions, Text, StyleSheet } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import {connect} from 'react-redux';
+import {getTrendsThunk} from '../redux/actions/trendActions';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const TrendScreen = props => {
+  useEffect(() => {
+    props.handleTrends();
+  }, [])
   const {trends} = props;
   const labels = trends.map(trend => {
     return trend.date;
@@ -44,6 +48,12 @@ const mapState = state => ({
   trends: state.trends
 })
 
+const mapDispatch = dispatch => {
+  return {
+    handleTrends: () => dispatch(getTrendsThunk())
+  }
+}
+
 const chartConfig = {
   backgroundGradientFrom: "#111",
   backgroundGradientFromOpacity: 0,
@@ -62,4 +72,4 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   }
 })
-export default connect(mapState, null)(TrendScreen);
+export default connect(mapState, mapDispatch)(TrendScreen);
