@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "com.jaredjackson.mealtracker",
-      "versionCode": 1.01,
+      "versionCode": 2,
       "permissions": ["WRITE_EXTERNAL_STORAGE", "READ_EXTERNAL_STORAGE", "READ_INTERNAL_STORAGE"]
     }
   }
